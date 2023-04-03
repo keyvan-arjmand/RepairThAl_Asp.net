@@ -1,0 +1,136 @@
+﻿@using DAL.Model
+@model User
+@{
+    ViewData["Title"] = "پروفایل";
+
+    Layout = "~/views/shared/_layoutadminpanel.cshtml";
+    DB db = new DB();
+    var Model = db.users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+    List<DAL.DTOs.OrderViewModel> Orders = ViewBag.Orders;
+    DAL.DTOs.OrderViewModel LastOrder = Orders.OrderBy(x => x.Order_Request_Date).FirstOrDefault();
+}
+<div class="content-wrapper" style="min-height: 520.333px; width:100%;direction:rtl;text-align:right">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1>پروفایل</h1>
+                </div>
+                <div class="col-sm-12">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">خانه</a></li>
+                        <li class="breadcrumb-item active">پروفایل کاربری</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline">
+
+                        <div class="card-body box-profile">
+                            <h3 class="profile-username text-center">@Model.FirstName @Model.LastName</h3>
+                            <p class="text-muted text-center"><span class="badge badge-primary">ادمین اصلی</span></p>
+                            <a href="@Url.Action("Logout","Account")" class="btn btn-danger btn-block"><b>خروج از حساب</b></a>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+
+
+                </div>
+                <!-- /.col -->
+
+
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <ul class="nav nav-pills">
+                                <li  class="nav-item"><a class="nav-link active" id="infoU" href="#settings" data-toggle="tab">اطلاعات حساب</a></li>
+                            </ul>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content">
+                         
+                                <!-- /.tab-pane -->
+
+                                <div class="tab-pane" id="settings">
+                                    <form class="form-horizontal" asp-action="EditUser" asp-controller="User" method="post">
+                                        <div class="form-group">
+                                            <label for="inputName" class="col-sm-2 control-label">نام</label>
+
+                                            <div class="col-sm-10">
+                                                <input asp-for="FirstName" type="text" class="form-control" id="inputName" placeholder="نام" value="@Model.FirstName" maxlength="30">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail" class="col-sm-2 control-label">نام خانوادگی</label>
+
+                                            <div class="col-sm-10">
+                                                <input asp-for="LastName" type="text" class="form-control" id="inputEmail" placeholder="نام خانوادگی" value="@Model.LastName" maxlength="30">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputName2" class="col-sm-2 control-label">رمز عبور</label>
+
+                                            <div class="col-sm-10">
+                                                <input asp-for="Password" type="text" class="form-control" id="inputName2" placeholder="رمز عبور" value="@Model.Password" maxlength="30">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputSkills" class="col-sm-2 control-label">شماره تماس</label>
+
+                                            <div class="col-sm-10">
+                                                <input asp-for="PhoneNumber" type="text" class="form-control" id="inputSkills" placeholder="شماره تماس" value="@Model.PhoneNumber" maxlength="15">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputSkills" class="col-sm-2 control-label">ایمیل</label>
+
+                                            <div class="col-sm-10">
+                                                <input asp-for="Email" type="text" class="form-control disabled" disabled id="inputSkills" placeholder="ایمیل" value="@Model.Email" maxlength="30">
+                                            </div>
+                                        </div>
+                                        <input asp-for=User__ID type="text" name="User__ID" value="@Model.User__ID" style="display:none;">
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-info">ثـبت تغیرات</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div><!-- /.card-body -->
+                    </div>
+                    <!-- /.nav-tabs-custom -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<div class="loadpanel">
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#settings").show();
+        });
+    </script>
+            
+}
+                          

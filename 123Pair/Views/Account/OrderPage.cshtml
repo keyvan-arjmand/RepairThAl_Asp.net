@@ -1,0 +1,253 @@
+﻿@{
+    var Device_Type = DAL.Services.Order_Services.HomeService();
+    var BuildService_Type = DAL.Services.Order_Services.BuildService();
+    var Brand = DAL.Services.Order_Services.Brand();
+    ViewData["Title"] = " درخواست کارشناس";
+
+}
+<style>
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 11;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+</style>
+<div class="px-4 py-5 px-md-5 text-right text-lg-start" style="background-color: hsl(0, 0%, 96%);">
+    <div class="container-fluid py-5">
+        <main>
+            <div class="py-5 text-center">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+                    <label id="HomeRePair" class="btn btn-outline-primary" for="btnradio1">لوازم خانگی</label>
+
+
+                    <label id="BuildRePair" class="btn btn-outline-primary" for="btnradio2">تاسیسات ساختمان</label>
+
+                </div>
+                <h2>ثـبت درخواست اعزام کارشناس</h2>
+                <p class="lead"></p>
+            </div>
+
+            <div class="row g-5" id="Order">
+
+                <div class="col-md-12 col-lg-12">
+                    <form id="Home" class="needs-validation Home" novalidate="" style="border: 1px solid rgb(224, 224, 224);padding: 9px;border-radius: 15px; background-color: #e2e2e2;">
+                        <h4 class="mb-3" style="text-align:center">فرم درخواست تعمیرات لوازم خانگی</h4>
+                        <div class="row g-3">
+                            <input type="text" class="btn-check" id="FormType" autocomplete="off" value="1" hidden>
+
+
+                            <div class="col-md-7">
+                                <label for="country" class="form-label">برند دستگاه</label>
+                                <select class="form-select" id="Brand" required="">
+                                    <option value="0">...انتخاب</option>
+                                    @foreach (var item in Brand)
+                                    {
+
+                                        <option value="@item.Id">@item.Desc</option>
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="state" class="form-label">نوع دستگاه</label>
+                                <select class="form-select" id="Device" required="">
+                                    <option value="0">...انتخاب</option>
+                                    @foreach (var i in Device_Type)
+                                    {
+
+                                        <option value="@i.Id">@i.Desc </option>
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please provide a valid state.
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+                                <label for="exampleFormControlTextarea1">ایرادات</label>
+                                <textarea class="form-control" id="OrderDesc" rows="4"></textarea>
+
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                            <div class="col-md-3">
+                                <label for="country" class="form-label">منطقه</label>
+                                <select class="form-select" id="State" required="">
+                                    <option value="0">...انتخاب</option>
+                                    <option value="شرق تهران">شرق تهران</option>
+                                    <option value="غرب تهران">غرب تهران</option>
+                                    <option value="کرج">کرج</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+
+                                <label for="exampleFormControlTextarea1">آدرس</label>
+                                <textarea class="form-control" id="OrderAddress" rows="4"></textarea>
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="formGroupExampleInput">شماره ثابت</label>
+                                <input type="text" class="form-control" id="OrderNumber"
+                                       placeholder="0213273654">
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <hr class="my-4">
+
+                        <div style="background-color:#fff;border-radius: 8px;">
+                            <div class="form-check" style="padding: 10px;">
+                                <label class="form-check-label" for="same-address">
+                                    پس از ثبت اطلاعات کارشناسان مربوط کمتر از 60 دقیقه با شما جهت حضور در منزل یا محل کار شما تماس خواهند گرفت
+                                </label>
+                                <label class="form-check-label" for="save-info">
+                                    در زمان مد نظر شما کارشناس متخصص در محل حاضر شده و عیب دقیق دستگاه را تشخیص و هزینه تعمیرات را اعلام مینماید و در صورت تایید شما تعمیرات از همان لحظه آغاز میشود
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <button class="w-100 btn btn-primary btn-lg" type="button" id="HomeSubmit">ثبت درخواست</button>
+                    </form>
+
+
+                    <form id="Build" class="needs-validation Build" novalidate="" style="border: 1px solid rgb(224, 224, 224);padding: 9px;border-radius: 15px; background-color: #e2e2e2;">
+                        <h4 class="mb-3" style="text-align:center">
+                            فرم درخواست تاسیسات ساختمان
+                        </h4>
+                        <div class="row g-3">
+                            <input type="text" class="btn-check" id="FormType" autocomplete="off" value="1" hidden>
+
+
+                            <div class="col-md-12">
+                                <label for="country" class="form-label">نوع خدمات</label>
+                                <select class="form-select" id="BuildServiceType" required="">
+                                    <option value="">...انتخاب</option>
+                                    @foreach (var i in BuildService_Type)
+                                    {
+                                        <option value="@i.Id">@i.Desc</option>
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-9">
+                                <label for="exampleFormControlTextarea1">توضیحات</label>
+                                <textarea class="form-control" id="Order_Desc_Build" rows="4"></textarea>
+
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                            <div class="col-md-3">
+                                <label for="country" class="form-label">منطقه</label>
+                                <select class="form-select" id="State_Build" required="">
+                                    <option value="0">...انتخاب</option>
+                                    <option value="شرق تهران">شرق تهران</option>
+                                    <option value="غرب تهران">غرب تهران</option>
+                                    <option value="کرج">کرج</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+
+                                <label for="exampleFormControlTextarea1">آدرس</label>
+                                <textarea class="form-control" id="Address_Build" rows="4"></textarea>
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="formGroupExampleInput">شماره ثابت</label>
+                                <input type="text" class="form-control" id="Order_PhoneNumber_Build"
+                                       placeholder="0213273654">
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <hr class="my-4">
+                        <div style="background-color:#fff;border-radius: 8px;">
+                            <div class="form-check" style="padding: 10px;">
+                                <label class="form-check-label" for="same-address">
+                                    پس از ثبت اطلاعات کارشناسان مربوط کمتر از 60 دقیقه با شما جهت حضور در منزل یا محل کار شما تماس خواهند گرفت
+                                </label>
+                                <label class="form-check-label" for="save-info">
+                                    در زمان مد نظر شما کارشناس متخصص در محل حاضر شده و عیب دقیق دستگاه را تشخیص و هزینه تعمیرات را اعلام مینماید و در صورت تایید شما تعمیرات از همان لحظه آغاز میشود
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <button class="w-100 btn btn-primary btn-lg" type="button" id="BuildSubmit">ثبت درخواست</button>
+                    </form>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<div class="loadpanel">
+</div>
+
+@section Scripts{
+    <script src="~/js/order.js"></script>
+}

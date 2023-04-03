@@ -1,0 +1,396 @@
+﻿@{
+
+    DAL.Services.User_Services user_Services = new DAL.Services.User_Services();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] 1 2 3 تـعمـیر</title>
+
+    <link href="~/css/devextreme/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+    <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <link href="~/css/persianDatepicker-default.css" rel="stylesheet" />
+    @RenderSection("link", required: false)
+
+    <!-- Favicon -->
+    <link href="~/img/Repair.png" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/layout/stylesheet.css" rel="stylesheet" />
+
+    <link href="~/css/modlajax.css" rel="stylesheet" />
+
+
+
+
+</head>
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 bg-secondary d-none d-lg-block">
+                    <a href="#" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
+                        <h5 style="font-size:3rem" class="m-0 display-4 text-primary">
+                            123
+                            RePair
+                            <span>
+                                <img src="https://cdn-icons-png.flaticon.com/512/810/810059.png " width="40px" height="auto"
+                                     style="background-image:none" />
+                            </span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row bg-dark d-none d-lg-flex">
+                        <div class="col-lg-7 text-left text-white">
+                            <div class="h-100 d-inline-flex align-items-center border-right border-primary py-2 px-3">
+                                <i class="fa fa-envelope text-primary mr-2"></i>
+                                <small>09104978754</small>
+                            </div>
+                            <div class="h-100 d-inline-flex align-items-center py-2 px-2">
+                                <i class="fa fa-phone-alt text-primary mr-2"></i>
+                                <small>+026 345 6789</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-right">
+                            <div class="d-inline-flex align-items-center pr-2">
+
+                                <a class="text-primary p-2" href="https://www.instagram.com/technical_tehran.alborz/">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="navbar navbar-expand-lg bg-white navbar-light p-0">
+                        <a href="" class="navbar-brand d-block d-lg-none">
+                            <h3 class="m-0 display-4 text-primary" style="font-size: calc(1.2rem + 2.7vw);">123 <br /> RePair</h3>
+                        </a>
+                        <div style="display:flex;flex-direction:column;align-items: center; gap: 5px;">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                if (user_Services.GetByEmail(User.Identity.Name).IsAdmin)
+                                {
+                                    <a href="@Url.Action("Index","AdminPanel")" class="btn btn-primary d-none d-block d-lg-none">پنل ادمین</a>
+
+                                }
+                                else
+                                {
+
+                                    <a href="@Url.Action("UserProfile","Account")" class="btn btn-primary d-none d-block d-lg-none">پروفایل</a>
+                                }
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary d-none d-block d-lg-none" id="MobileBtn" style="border-radius:24px !important"><i class="fa fa-user-circle" aria-hidden="true"></i></a>
+                                <!-- The Modal -->
+                                <div id="MobileModal" class="modal">
+
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <span class="close1" style="font-size: 2rem;" id="closeMobile">&times;</span>
+                                            <h4 class="modal-title">ورود به حساب</h4>
+                                        </div>
+
+                                        <form dir="rtl" style="margin-top: 10px;">
+                                            <!-- Email input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="email" id="EmailLoginLayout" class="form-control" placeholder="ایمیل" />
+                                            </div>
+
+                                            <!-- Password input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="password" id="PasswordLoginLayout" class="form-control " placeholder="رمز عبور" />
+                                            </div>
+
+                                            <!-- 2 column grid layout for inline styling -->
+                                            <div class="row mb-4">
+                                                <div class="col d-flex justify-content-between">
+                                                    <!-- Checkbox -->
+                                                    <div class="">
+                                                        <a href="@Url.Action("SignUpPage","Account")" class="form-check-label">?حساب کاربری نداری</a>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <!-- Submit button -->
+                                            <div class="modal-footer" style="justify-content:center !important">
+                                                <button type="button" id="LoginBtn" class="btn btn-primary btn-block mb-4 " style="width:40%">ورود</button>
+                                            </div>
+
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            }
+
+                            <button style="width: 55px;" type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                            <div class="navbar-nav mr-auto py-0" style="text-align:right">
+                                <a href="@Url.Action("index","Home")" class="nav-item nav-link active">صفحه ی اصلی</a>
+                                <a href="@Url.Action("AboutUs","Account")" class="nav-item nav-link">درباره ی ما</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="nav-item nav-link" href="@Url.Action("OrderPage","Account")">درخواست اعزام کارشناس</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-item nav-link disabled" href="@Url.Action("","")" disabled>درخواست اعزام کارشناس</a>
+                                }
+
+                                @*<div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">خدمات ما</a>
+                                <div style="top:70% !important ;text-align:right" class="dropdown-menu rounded-0 m-0">
+                                <a href="@Url.Action("Service","Account")" class="dropdown-item">تعمیرات کولر گازی</a>
+                                <a href="@Url.Action("Service","Account")" class="dropdown-item">تعمیرات تلویزیون</a>
+                                </div>
+                                </div>*@
+                                <a href="@Url.Action("ContactUs","Account")" class="nav-item nav-link">تماس با ما</a>
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                if (user_Services.GetByEmail(User.Identity.Name).IsAdmin)
+                                {
+                                    <span id="CloseLayout" hidden></span>
+                                    <a id="myBtn" hidden></a>
+                                    <a href="@Url.Action("Index","AdminPanel")" class="btn btn-primary mr-3 d-none d-lg-block">پنل ادمین</a>
+
+                                }
+                                else
+                                {
+                                    <span id="CloseLayout" hidden></span>
+                                    <a id="myBtn" hidden></a>
+                                    <a href="@Url.Action("UserProfile","Account")" class="btn btn-primary mr-3 d-none d-lg-block">پروفایل</a>
+                                }
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary mr-3 d-none d-lg-block" id="myBtn">ورود / ثبت نام</a>
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+
+                                    <!-- Modal content -->
+                                    <div class="modal-content" style="width:38%">
+                                        <div class="modal-header">
+                                            <span class="CloseLayout" style="font-size: 2rem;" id="CloseLayout">&times;</span>
+                                            <h4 class="modal-title">ورود به حساب</h4>
+                                        </div>
+
+                                        <form dir="rtl" style="margin-top: 10px;">
+                                            <!-- Email input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="email" id="EmailLoginLayoutMobile" class="form-control EmailLogin" placeholder="ایمیل" />
+                                            </div>
+
+                                            <!-- Password input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="password" id="PasswordLoginLayoutMobile" class="form-control PasswordLogin" placeholder="رمز عبور" />
+                                            </div>
+
+                                            <!-- 2 column grid layout for inline styling -->
+                                            <div class="row mb-4">
+                                                <div class="col d-flex justify-content-between">
+                                                    <!-- Checkbox -->
+                                                    <div class="">
+                                                        <a href="@Url.Action("SignUpPage","Account")" class="form-check-label">?حساب کاربری نداری</a>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <!-- Submit button -->
+                                            <div class="modal-footer" style="justify-content:center !important">
+                                                <button id="LoginBtnMobile" type="button" class="btn btn-primary btn-block mb-4" style="width:40%">ورود</button>
+                                            </div>
+
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr />
+        @RenderBody()
+
+    <footer class="border-top footer text-muted">
+        <div class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
+            <div class="row pt-5" style="text-align:right">
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <a href="index.html" class="navbar-brand">
+                        <h1 class="m-0 mt-n3 display-4 text-primary">123 تعمیر</h1>
+                    </a>
+                    <p>
+                        موسسه فنی تخصصی تهران البرز
+
+                    </p>
+                    <h5 class="font-weight-semi-bold text-white mb-2">محل های تحت پوشش کاری </h5>
+                    <p class="mb-1">کرج _ شرق و غرب تهران </p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <h4 class="font-weight-semi-bold text-primary mb-4">تماس با ما</h4>
+                    <p>
+                        <i class="fa fa-map-marker-alt text-primary mr-2"></i>تهران بلوار خیابان پلاک 216
+                    </p>
+                    <p><i class="fa fa-phone-alt text-primary mr-2"></i>+026 345 6789</p>
+                    <p><i class="fa fa-envelope text-primary mr-2"></i>0910 497 8754</p>
+                    <div class="d-flex justify-content-end mt-4">
+                        <a class="btn btn-light btn-social" href="https://www.instagram.com/technical_tehran.alborz/"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <h4 class="font-weight-semi-bold text-primary mb-4">دسترسی سریع</h4>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-white mb-2" href="@Url.Action("Index","Home")"><i class="fa fa-angle-right mr-2"></i>صفحه ی اصلی</a>
+                        <a class="text-white mb-2" href="@Url.Action("AboutUs","Account")"><i class="fa fa-angle-right mr-2"></i>درباره ما</a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+
+                            <a class="text-white" href="@Url.Action("OrderPage","Account")"><i class="fa fa-angle-right mr-2"></i>درخواست کارشناس</a>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <h4 class="font-weight-semi-bold text-primary mb-4">عضویت در خبرنامه</h4>
+                    <p>
+                        با عضویت در خبر نامه 123 تعمیر از اخرین اخبار و شرایط ویژه مجموعه مطلع میشوید
+                    </p>
+                    <div class="w-100">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-0" style="padding: 25px;"
+                                   placeholder="ایمیل شما">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary px-4">ثبت نام</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary px-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    </footer>
+    <div id="SignUpLoaderLayout" class="modal">
+
+        <!-- Modal content -->
+        <div style="display:flex;margin-top: 8%;flex-direction:row !important ; justify-content:center;">
+            <div class="loader" id="loader"></div>
+        </div>
+
+    </div>
+    <div class="loadpanel">
+    </div>
+    <script src="~/js/devextreme/jquery.js"></script>
+    <script src="~/js/devextreme/bootstrap.js"></script>
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/persianDatepicker.min.js"></script>
+    <script src="~/js/devextreme/bootstrap.js"></script>
+    <script src="~/js/layout.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script src="~/js/numeral.min.js"></script>
+    <script src="~/js/CommonUtils.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/counterup/counterup.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <!-- Contact Javascript File -->
+    @*<script src="~/mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>*@
+    <!-- Template Javascript -->
+    <script src="~/js/main.js"></script>
+
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("CloseLayout");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        //MobileModal
+        // Get the modal
+        var modalMobile = document.getElementById("MobileModal");
+
+        // Get the button that opens the modal
+        var btnMobile = document.getElementById("MobileBtn");
+
+        // Get the <span> element that closes the modal
+        var spanMobile = document.getElementById("closeMobile");
+
+        // When the user clicks the button, open the modal
+        btnMobile.onclick = function () {
+            modalMobile.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        spanMobile.onclick = function () {
+            modalMobile.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modalMobile) {
+                modalMobile.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

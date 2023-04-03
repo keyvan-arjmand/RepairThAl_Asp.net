@@ -1,0 +1,185 @@
+﻿@using DAL.Model;
+@{
+    Layout = "~/views/shared/_layoutadminpanel.cshtml";
+    ViewData["Title"] = "داشبورد";
+    DB db = new DB();
+    DAL.Services.Order_Services order_Services = new DAL.Services.Order_Services();
+    var Model = db.users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+    int UserCount = db.users.Count();
+    int OrderCount = db.orders.Count();
+    int DoneOrderCount = db.orders.Where(x => x.Order_State == 4 || x.Order_State == 3).Count();
+    int OrderStateCount = db.orders.Where(x => x.Order_State != 3 && x.Order_State != 4).Count();
+
+    List<DAL.DTOs.OrderViewModel> Orders = order_Services.GetViewModelList().Where(x => x.Order_State == 0 || x.Order_State == 1).ToList();
+}
+@section Link{
+    <style>
+        td, th {
+            text-align: center;
+        }
+    </style>
+
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2" style="text-align:right">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">داشبورد ادمین</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="@Url.Action("index","Home")">خانه</a></li>
+                        <li class="breadcrumb-item active">داشبورد ادمین</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="clearfix hidden-md-up"></div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fa fa-shopping-cart"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">سفارشات</span>
+                            <span class="info-box-number">@OrderCount</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-users"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">اعضای سایت</span>
+                            <span class="info-box-number">@UserCount</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fa fa-gear"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">در حال انجام</span>
+                            <span class="info-box-number">
+                                @OrderStateCount
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><img width="30" src="https://cdn-icons-png.flaticon.com/512/1873/1873095.png " /></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">انجام شده</span>
+                            <span class="info-box-number">
+                                @DoneOrderCount
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header no-border" style="display:flex;justify-content:space-between">
+                    <h3 class="card-title">سفارشات جاری</h3>
+                    <div class="card-tools">
+                        <a href="#" class="btn btn-tool btn-sm">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            @if (Orders.Count > 0)
+                            {
+
+                                <tr>
+                                    <th>شماره</th>
+                                    <th>کددرخواست</th>
+                                    <th>تاریخ درخواست</th>
+                                    <th>خدمات</th>
+                                    <th>وضعیت</th>
+                                </tr>
+                            }
+                        </thead>
+                        <tbody>
+                            @if (Orders.Count > 0)
+                            {
+                                int index = 0;
+                                Orders.Reverse();
+                                foreach (var i in Orders)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>
+                                            @index
+                                        </td>
+                                        <td>@i.Order_Code</td>
+                                        <td>
+                                            @DAL.Helpers.TimeUtility.FormatFaDate(i.Order_Request_Date)
+                                        </td>
+                                        <td>
+                                            @i.Order_State_Desc
+                                        </td>
+                                        @if (string.IsNullOrWhiteSpace(i.Device_Type_Desc))
+                                        {
+                                            <td>@i.BuildServiceType_Desc </td>
+                                        }
+                                        else
+                                        {
+                                            <td>@i.Device_Type_Desc </td>
+                                        }
+                                      
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <div style="text-align:center">
+                                    سفارشی در سایت ثبت نشده است
+                                </div>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container-fluid -->
+</div>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper --><div class="loadpanel">
+</div>

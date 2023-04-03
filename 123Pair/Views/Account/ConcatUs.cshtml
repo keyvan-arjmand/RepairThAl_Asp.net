@@ -1,0 +1,81 @@
+﻿
+@{
+
+ ViewData["Title"] = "تماس با ما";
+}
+
+ <!-- Contact Start -->
+<div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+    <div class="container-fluid py-5">
+        <div class="row align-items-end mb-4">
+            <div class="col-lg-6">
+                <h6 class="text-secondary font-weight-semi-bold text-uppercase mb-3">تماس با ما</h6>
+                <h1 class="section-title mb-3">فرم ارسال درخواست</h1>
+            </div>
+            <div class="col-lg-6">
+                <h4 class="font-weight-normal text-muted mb-3" style="text-align: right;">ارتباط مستقیم با ما</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="contact-form" style="text-align: right;" dir="rtl">
+                    <div id="success"></div>
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                        <div class="form-row">
+                            <div class="col-sm-6 control-group">
+                                <input type="text" class="form-control p-4" id="name"
+                                       placeholder="نام و نام خانوادگی" required="required"
+                                       data-validation-required-message="مشخصات خود را وارد کنید" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="col-sm-6 control-group">
+                                <input type="text" class="form-control p-4" id="email" placeholder="شماره تماس"
+                                       required="required"
+                                       data-validation-required-message="شماره همراه الزامی میباشد" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control p-4" id="subject" placeholder="موضوع پیام"
+                                   required="required" data-validation-required-message="موضوع پیام را وارد کنید" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <textarea class="form-control p-4" rows="6" id="message" placeholder="متن پیام"
+                                      required="required"
+                                      data-validation-required-message="پیام خود را وارد کنید"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-block py-3 px-5" type="submit"
+                                    id="sendMessageButton">
+                                ارسال پیام
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5" style="min-height: 400px;text-align: right;background: #e0e0e0;">
+                <img src="" alt="">
+                <p>
+                    آدرس : کرج ، چهارراه مصباح ، بلوار فردوس مرکز تعمیرات لوازم خانگی 123تعمیر
+                    <br />
+                    تلفن : 84340-021
+                    <br />
+                    info@alorepair.com : ایمیل
+                    <br />
+                    ما را در شبکه های اجتماعی دنبال کنید
+                    <br />
+                    <a class="text-primary p-2" href="">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a class="text-primary p-2" href="https://www.instagram.com/technical_tehran.alborz/">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End --><div class="loadpanel">
+</div>

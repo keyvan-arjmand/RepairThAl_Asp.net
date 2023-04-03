@@ -1,0 +1,369 @@
+﻿@using DAL.Model;
+@using System.Globalization;
+@model DAL.Model.Order;
+@{
+    Layout = "~/views/shared/_layoutadminpanel.cshtml";
+    ViewData["Title"] = "سفارشات";
+
+    DB db = new DB();
+    var Model = db.users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+    DAL.Services.Order_Services order_Services = new DAL.Services.Order_Services();
+    int UserCount = db.users.Count();
+    int OrderCount = db.orders.Count();
+    int OrderStateCount = db.orders.Where(x => x.Order_State != 3 && x.Order_State != 4).Count();
+
+    var Device_Type = DAL.Services.Order_Services.HomeService();
+    var BuildService_Type = DAL.Services.Order_Services.BuildService();
+    var Brand = DAL.Services.Order_Services.Brand();
+    var OrderState = DAL.Services.Order_Services.OrderState();
+
+    List<DAL.DTOs.OrderViewModel> Orders = order_Services.GetViewModelList().OrderBy(x => x.Order_Request_Date).ToList();
+}
+@section link{
+    <link href="~/css/Layout/Admin_Orders.css" rel="stylesheet" />
+    <link href="~/css/Layout/persianDatepicker-default.css" rel="stylesheet" />
+}
+
+<div class="content-wrapper" style="min-height: 552.333px;direction:rtl;text-align:right">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>لیست سفارشات</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">خانه</a></li>
+                        <li class="breadcrumb-item active">لیست سفارشات</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="example1" class="table table-bordered table-striped dataTable" role="grid">
+
+
+                            @if (Orders.Count > 0)
+                            {
+                                Orders.Reverse();
+                                int index = 0;
+                                <thead>
+                                    <tr>
+                                        <th>شماره</th>
+                                        <th>کد تعمیر</th>
+                                        <th>خدمات</th>
+                                        <th>تاریخ ثبت درخواست</th>
+                                        <th>وضعیت</th>
+                                        <th>بیشتر</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var i in Orders.OrderBy(x => x.Order_State))
+                                    {
+
+                                        index++;
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>@i.Order_Code</td>
+                                            @if (string.IsNullOrWhiteSpace(i.Device_Type_Desc))
+                                            {
+                                                <td>@i.BuildServiceType_Desc </td>
+                                            }
+                                            else
+                                            {
+                                                <td>@i.Device_Type_Desc </td>
+                                            }
+                                            <td>@DAL.Helpers.TimeUtility.FormatFaDate(i.Order_Request_Date)</td>
+                                            <td><span class="badge badge-success">@i.Order_State_Desc</span></td>
+                                            <td style="text-align: center;cursor: pointer;">
+                                                <form>
+                                                    <input type="text" name="nOrder__ID" class="Order__ID" value="@i.Order__ID" hidden>
+                                                    <input type="text" name="nOrder_Code" class="Order_Code" value="@i.Order_Code" hidden>
+                                                    <input type="text" name="nOrderType" class="ordetype" value="@i.OrderType" hidden>
+                                                    <input type="text" name="nDevice_Type" class="Device_Type" value="@i.Device_Type" hidden>
+                                                    <input type="text" name="nBrand" class="Brand" value="@i.Brand" hidden>
+                                                    <input type="text" name="nBuildServiceType" class="BuildServiceType" value="@i.BuildServiceType" hidden>
+                                                    <input type="text" name="nOrder_Desc" class="Order_Desc" value="@i.Order_Desc" hidden>
+                                                    <input type="text" name="nState" class="State" value="@i.State" hidden>
+                                                    <input type="text" name="nAddress" class="Address" value="@i.Address" hidden>
+                                                    <input type="text" name="nOrder_PhoneNumber" class="Order_PhoneNumber" value="@i.Order_PhoneNumber" hidden>
+                                                    <input type="text" name="nOrder_State" class="Order_State" value="@i.Order_State" hidden>
+                                                    <input type="text" name="nOrder_Request_Date" class="Order_Request_Date" value="@DAL.Helpers.TimeUtility.FormatFaDate(i.Order_Request_Date)" hidden>
+                                                    <input type="text" name="nOrder_Repair_Date" class="Order_Repair_Date" value="@DAL.Helpers.TimeUtility.FormatFaDate( i.Order_Repair_Date)" hidden>
+                                                    <input type="text" name="nUser_ID" class="User_ID" value="@i.User_ID" hidden>
+                                                    <input type="text" name="nEmail" class="User_ID" value="@i.Email" hidden>
+                                                    <input type="text" name="nPhoneNumber" class="User_ID" value="@i.PhoneNumber" hidden>
+                                                    <input type="text" name="nFirstName" class="User_ID" value="@i.FirstName" hidden>
+                                                    <input type="text" name="nLastName" class="User_ID" value="@i.LastName" hidden>
+
+                                                    <a style="padding:0" class="btn mr-3 d-none d-lg-block OrderDetail" onclick=""><i class="material-icons">&#xe241;</i></a>
+                                                </form>
+                                            </td>
+
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            }
+                            else
+                            {
+                                <div>
+                                    درخواست ثبت شده ندارید
+                                </div>
+                            }
+
+
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row"><div class="col-sm-12 col-md-5"></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="example1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">قبلی</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">بعدی</a></li></ul></div></div></div>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- Modal -->
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close1" style="font-size: 2rem;" id="CloseLayout">&times;</span>
+            <h4 class="modal-title">جزئیات درخواست</h4>
+        </div>
+        <!-- Email input -->
+        <form asp-action="Update" asp-controller="Order" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label>نوع درخواست</label>
+                            <select id="OrderType" class="form-control select2" disabled style="width: 100%;">
+                                <option value="0">تعمیرات</option>
+                                <option value="1">تاسیسات</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label>خدمات تاسیسات</label>
+                            <select id="BuildServiceType" class="form-control select2" disabled style="width: 100%;">
+                                @foreach (var i in BuildService_Type)
+                                {
+                                    <option value="@i.Id">@i.Desc</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.form-group -->
+
+
+
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label>نوع دستگاه</label>
+                            <select id="Device_Type" class="form-control select2" disabled style="width: 100%;">
+                                @foreach (var i in Device_Type)
+                                {
+                                    <option value="@i.Id">@i.Desc</option>
+
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label>برند دستگاه</label>
+                            <select id="Brand" class="form-control select2" disabled style="width: 100%;">
+                                @foreach (var i in Brand)
+                                {
+                                    <option value="@i.Id">@i.Desc</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label>جزئیات درخواست</label>
+                            <textarea id="Order_Desc" class="form-control" rows="3" placeholder="" disabled="disabled"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">کد سفارش</label>
+                            <input type="text" class="form-control" id="Order_Code" disabled placeholder="">
+                        </div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label>استان</label>
+                            <select asp-for="State" id="State" class="form-control select2" style="width: 100%;">
+                                <option value="شرق تهران">شرق تهران</option>
+                                <option value="غرب تهران">غرب تهران</option>
+                                <option value="کرج">کرج</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">آدرس</label>
+                            <input type="text" class="form-control" id="Address" disabled placeholder="">
+                        </div>
+                    </div>
+                    <!-- /.form-group -->
+
+
+                    <div class="col-6">
+                        <label for="exampleInputEmail1">شماره ثابت</label>
+                        <input type="text" class="form-control" id="Order_PhoneNumber" disabled placeholder="">
+                    </div>
+                    <div class="col-6">
+                        <label>وضعیت درخواست</label>
+                        <select asp-for="Order_State" id="Order_State" class="form-control select2" style="width: 100%;">
+                            @foreach (var i in OrderState)
+                            {
+                                <option value="@i.Id">@i.Desc</option>
+                            }
+
+
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group  modal-filed">
+                            <label>تاریخ درخواست</label>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input disabled id="Order_Request_Date" class="normal-example form-control pwt-datepicker-input-element">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group  modal-filed">
+                            <label>تاریخ تعمیر</label>
+                            <div class="input-group">
+                                <input type="text" id="Repair_date_textbox" style="width: 100%;height:38px">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">تلفن همراه</label>
+                            <input disabled type="text" class="form-control" id="PhoneNumber" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">نام</label>
+                            <input disabled type="text" class="form-control" id="FirstName" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">نام خانوادگی</label>
+                            <input disabled type="text" class="form-control" id="LastName" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">ایمیل</label>
+                            <input disabled type="text" class="form-control" id="Email" placeholder="">
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" id="User_ID" placeholder="" hidden>
+                    <input type="text" id="Order__ID" hidden>
+                </div>
+            </div>
+            <div class="modal-footer" style="display:flex ;justify-content:center !important;gap:5px">
+                <button type="button" class="btn btn-primary" id="Edit" style="width:20%">ثبت</button>
+                <button type="button" class="btn btn-danger" id="Delete" style="width:20%">حذف</button>
+            </div>
+        </form>
+
+
+        <!-- Submit button -->
+
+
+
+    </div>
+
+</div>
+<div id="LoaderOrder" class="modal">
+
+    <!-- Modal content -->
+    <div style="display:flex;margin-top: 8%;flex-direction:row !important ; justify-content:center;">
+        <div class="loader" id="loader"></div>
+    </div>
+
+</div>
+<div class="loadpanel">
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    var modal = document.getElementById("myModal");
+
+    var btn = document.getElementsByClassName("myBtn");
+
+
+    var span = document.getElementById("CloseLayout");
+
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+@section Scripts{
+
+    <script src="~/js/persianDatepicker.min.js"></script>
+    <script src="~/js/adminorder.js"></script>
+    <script src="~/js/OrderAdmin.js"></script>
+
+}

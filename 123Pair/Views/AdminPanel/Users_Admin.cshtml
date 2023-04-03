@@ -1,0 +1,270 @@
+﻿@{
+    ViewData["Title"] = "کاربران";
+
+    Layout = "~/views/shared/_layoutadminpanel.cshtml";
+    DAL.Services.User_Services User_Service = new DAL.Services.User_Services();
+    var Users = User_Service.GetUsers();
+}
+
+
+@section link{
+    <link rel="stylesheet" href="~/css/Layout/Admin_Users.css">
+}
+
+<div class="content-wrapper" style="min-height: 552.333px;direction:rtl;text-align:right">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>لیست کاربران سایت</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="#">خانه</a></li>
+                        <li class="breadcrumb-item active">لیست کاربران سایت</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length" id="example1_length"><label>Show <select name="example1_length" aria-controls="example1" class="form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div>
+                    </div><div class="col-sm-12 col-md-6"><div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div></div>
+                </div><div class="row">
+                    <div class="col-sm-12">
+                        <table id="example1" class="table table-bordered table-striped dataTable" role="grid">
+
+
+                            @if (Users.Count > 0)
+                            {
+                                int index = 0;
+                                <thead>
+                                    <tr>
+                                        <th>شماره</th>
+                                        <th>اسم</th>
+                                        <th>فامیل</th>
+                                        <th>موبایل</th>
+                                        <th>ایمیل</th>
+                                        <th>وضعیت کاربر</th>
+                                        <th>بیشتر</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var User in Users)
+                                    {
+                                        index++;
+
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>@User.FirstName</td>
+                                            <td>@User.LastName</td>
+                                            <td>@User.PhoneNumber</td>
+                                            <td>@User.Email</td>
+                                            @if (User.IsAdmin)
+                                            {
+                                                <td>ادمین</td>
+                                            }
+                                            else
+                                            {
+                                                <td>کاربر</td>
+                                            }
+
+                                            <td style="TEXT-ALIGN: center;cursor: pointer;">
+                                                <form>
+                                                    <input type="text" name="nUser__ID" class="Order__ID" value="@User.User__ID" hidden>
+                                                    <input type="text" name="nFirstName" class="Order_Code" value="@User.FirstName" hidden>
+                                                    <input type="text" name="nLastName" class="OrderType" value="@User.LastName" hidden>
+                                                    <input type="text" name="nPhoneNumber" class="Device_Type" value="@User.PhoneNumber" hidden>
+                                                    <input type="text" name="nEmail" class="Brand" value="@User.Email" hidden>
+                                                    <input type="text" name="nJoinDate" class="BuildServiceType" value="@User.JoinDate" hidden>
+                                                    @if (User.IsAdmin)
+                                                    {
+
+                                                        <input type="checkbox" name="nIsAdmin" class="Order_Desc" value="0" hidden>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" name="nIsAdmin" class="Order_Desc" value="1" hidden>
+
+                                                    }
+                                                    <input type="text" name="nPassword" class="State" value="@User.Password" hidden>
+                                                    <input type="text" name="nInstagram" class="Address" value="@User.Instagram" hidden>
+                                                    <a style="padding:0" class=" btn mr-3 d-none d-lg-block UserDetail"><i class="material-icons">&#xe241;</i></a>
+
+                                                </form>
+                                            </td>
+
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            }
+                            else
+                            {
+                                <div>
+                                    کاربری درسایت شما ثبت اطلاعت نکرده
+                                </div>
+                            }
+
+
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row"><div class="col-sm-12 col-md-5"></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="example1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">قبلی</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">بعدی</a></li></ul></div></div></div>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close1" style="font-size: 2rem;" id="CloseLayout">&times;</span>
+            <h4 class="modal-title">جزئیات کاربر</h4>
+        </div>
+        <form dir="rtl" style="margin-top: 10px;">
+            <!-- Email input -->
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">نام</label>
+                            <input type="text" class="form-control" id="FirstName" placeholder="">
+                        </div>
+                    </div>
+                    <!-- Password input -->
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">نام خانوادگی</label>
+                            <input type="text" class="form-control" id="LastName" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">شماره تلفن</label>
+                            <input type="text" class="form-control" id="PhoneNumber" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">ایمیل</label>
+                            <input disabled type="text" class="form-control" id="Email" placeholder="">
+                        </div>
+                    </div>
+
+
+                    <div class="form-outline mb-4 col-6">
+                        <label>وضعیت ادمین</label>
+                        <select id="IsAdmin" class="form-control select2" style="width: 100%;">
+                            <option value="1">کاربر</option>
+                            <option value="0">ادمین</option>
+
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">رمز عبور</label>
+                            <input type="text" class="form-control" id="Password" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">اینستاگرام</label>
+                            <input disabled type="text" class="form-control" id="Password" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group modal-filed">
+                            <label for="exampleInputEmail1">تاریخ عضویت</label>
+                            <input disabled type="text" class="form-control" id="JoinDate" placeholder="">
+                        </div>
+                    </div>
+                    <!-- Submit button -->
+                    <div class="modal-footer col-12" style="display:flex ;justify-content:center !important;gap:5px;align-items: baseline;">
+                        <button id="Edit" type="button" class="btn btn-primary btn-block mb-4" style="width:20%">ثبت</button>
+                        <button id="Delete" type="button" class="btn btn-danger btn-block mb-4" style="width:20%">حذف کاربر</button>
+                    </div>
+                </div>
+            </div>
+
+            <input type="text" class="form-control" id="User_ID" placeholder="" hidden>
+
+
+        </form>
+    </div>
+
+</div>
+<div class="loadpanel">
+</div>
+@section Scripts{
+    <script src="~/js/Users_Admin.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#CloseLayout").click(function () {
+                $("#myModal").hide();
+            });
+
+            $(".UserDetail").click(function () {
+                var currentrow = $(this).closest("form");
+                document.getElementById('myModal').style.display = 'block'
+               
+                $("#FirstName").val(currentrow.find('input[name="nFirstName"]').val());
+                $("#LastName").val(currentrow.find('input[name="nLastName"]').val());
+                $("#Email").val(currentrow.find('input[name="nEmail"]').val());
+                $("#User_ID").val(currentrow.find('input[name="nUser__ID"]').val());
+                $("#Password").val(currentrow.find('input[name="nPassword"]').val());
+                $("#Instagram").val(currentrow.find('input[name="nInstagram"]').val());
+                $("#JoinDate").val(formatDate(currentrow.find('input[name="nJoinDate"]').val()));
+                $("#IsAdmin").val(currentrow.find('input[name="nIsAdmin"]').val());
+                if ($("#IsAdmin").val() == 0) {
+                    $("#Delete").hide();
+                }
+                $("#PhoneNumber").val(currentrow.find('input[name="nPhoneNumber"]').val());
+
+            });
+
+
+
+        });
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("CloseLayout");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+	}
